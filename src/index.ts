@@ -5,6 +5,13 @@ export { defaultGeneratorFile } from '@/defaultGenerator'
 export { ensureGenerator } from '@/ensureGenerator'
 export { getGenerator } from '@/getGenerator'
 export {
+	LocalGenerator,
+	NpmGenerator,
+	RepoGenerator,
+	ParsedGenerator,
+	parseGenerator,
+} from '@/parseGenerator'
+export {
 	Action,
 	AddAction,
 	CopyAction,
