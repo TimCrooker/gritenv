@@ -1,0 +1,8 @@
+{
+	"dependencies": {
+		"package-a": "2.0.0"
+	},
+	"files": [
+		"package-a/package.json"
+	]
+}

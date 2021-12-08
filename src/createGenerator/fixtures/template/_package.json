@@ -1,0 +1,35 @@
+{
+	"name": "<%= name %>",
+	"version": "0.0.0",
+	"description": "<%= description %>",
+	"repository": {
+		"url": "<%= username %>/<%= name %>",
+		"type": "git"
+	},
+	"author": "<%= username %> <<%= email %>> (<%= website %>)",
+	"license": "MIT",
+	"keywords": [
+		"grit-generator",
+		"grit"
+	],
+	"files": [
+		"generator.js",
+		"template/**"
+	],
+	"scripts": {
+		"start": "grit . output",
+		"build": "tsc",
+		"test": "jest",
+		"update:grit": "yarn add grit-cli@latest"
+	},
+	"dependencies": {
+		"grit-cli": "^0.5.5"
+	},
+	"devDependencies": {
+		"@babel/preset-env": "^7.16.0",
+		"@babel/preset-typescript": "^7.16.0",
+		"@types/jest": "^27.0.2",
+		"jest": "^27.3.1",
+		"typescript": "^4.4.4"
+	}
+}

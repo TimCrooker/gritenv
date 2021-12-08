@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Name of the group defaults 1`] = `
+Array [
+  ".gitignore",
+  "LICENSE",
+  "README.md",
+  "package.json",
+]
+`;

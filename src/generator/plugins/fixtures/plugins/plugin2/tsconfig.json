@@ -1,0 +1,16 @@
+{
+	"name": "package",
+	"dependencies": {
+		"package-a": "1.0.0",
+		"package-b": "1.0.0"
+	},
+	"devDependencies": {
+		"package-c": "1.0.0"
+	},
+	"files": [
+		"package.json",
+		"package-a/package.json",
+		"package-b/package.json",
+		"package-c/package.json"
+	]
+}
