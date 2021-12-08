@@ -38,3 +38,4 @@ export {
 	InputPrompt,
 	Answers,
 } from '@/generator/prompts'
+export { store } from '@/utils/store'
