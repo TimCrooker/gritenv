@@ -1,11 +1,16 @@
-import { GeneratorConfig, Grit } from '@/index'
+import { Grit } from '..'
+import { GeneratorConfig } from '../generatorConfig'
 
-export type DataProvider = (
+/*********************TYPES**********************/
+
+type DataProvider = (
 	context: Grit
 ) => Promise<Record<string, any>> | Record<string, any>
 
+/*********************METHODS**********************/
+
 /** Data section runtime class */
-export class Data {
+class Data {
 	private grit: Grit
 	private _data: Record<string, any> = {}
 	private dataProviders: DataProvider[] = []
@@ -66,3 +71,9 @@ export class Data {
 		this._data = value
 	}
 }
+
+/*********************EXPORTS**********************/
+
+export { DataProvider }
+
+export { Data }

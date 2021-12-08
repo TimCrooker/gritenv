@@ -1,14 +1,14 @@
-import { Answers } from '@/generator/prompts/prompt'
+import { Answers } from '@/generator/prompts'
 
-export type Extend<T> =
-	| Partial<T>
-	| ((answers: Record<string, any>) => Partial<T>)
+/*********************TYPES**********************/
 
-export type Package = Record<string, any>
+type Extend<T> = Partial<T> | ((answers: Record<string, any>) => Partial<T>)
 
-export type Apply = (pkg: Package, answers: Answers) => Partial<Package>
+type Package = Record<string, any>
 
-export interface PluginFileConfig<T = Record<string, any>> {
+type Apply = (pkg: Package, answers: Answers) => Partial<Package>
+
+interface PluginFileConfig<T = Record<string, any>> {
 	/**
 	 * The name of the plugin.
 	 */
@@ -34,3 +34,9 @@ export interface PluginFileConfig<T = Record<string, any>> {
 	 */
 	apply?: Apply
 }
+
+/*********************EXPORTS**********************/
+
+export { PluginFileConfig }
+
+export { Extend, Package, Apply }

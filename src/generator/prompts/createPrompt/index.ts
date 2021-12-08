@@ -8,10 +8,14 @@ import {
 	Prompt,
 } from '../prompt'
 
-export type RemovePromptType<T extends Prompt> = Omit<T, 'type'>
+/*********************TYPES**********************/
+
+type RemovePromptType<T extends Prompt> = Omit<T, 'type'>
+
+/*********************METHODS**********************/
 
 /** Simple type-safe creation of prompts */
-export const createPrompt = {
+const createPrompt = {
 	input(action: RemovePromptType<InputPrompt>): InputPrompt {
 		return {
 			...action,
@@ -54,3 +58,7 @@ export const createPrompt = {
 		}
 	},
 }
+
+/*********************EXPORTS**********************/
+
+export { createPrompt, RemovePromptType }

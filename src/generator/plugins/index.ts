@@ -4,7 +4,7 @@ import {
 	handleIgnore,
 	mergePackages,
 	mergePluginJsonFiles,
-} from '@/generator/plugins/mergePluginFiles'
+} from '@/generator/plugins/mergePlugins'
 import chalk from 'chalk'
 import path from 'path'
 import { Action, ActionProvider } from '../actions'
@@ -15,9 +15,10 @@ import { hasPluginConfig, loadPluginConfig } from './pluginFile/getPluginFile'
 import { PluginFileConfig } from './pluginFile/pluginFileConfig'
 import { mergeObjects, pathExists, pathExistsSync } from 'youtill'
 import { defaultPluginFile } from './pluginFile'
-export * from './pluginFile'
 
-export interface Ignore {
+/*********************TYPES**********************/
+
+interface Ignore {
 	/**
 	 * List of plugins that the ignore applies to
 	 * Defaults to all plugins
@@ -39,7 +40,7 @@ export interface Ignore {
 	pattern: string[]
 }
 
-export interface PluginConfig<T extends Record<string, any>> {
+interface PluginConfig<T extends Record<string, any>> {
 	/**
 	 * The defined structure of data to inject in to the generator outputFile
 	 * This is used for putting data directly into any file via EJS transformations
@@ -55,7 +56,7 @@ export interface PluginConfig<T extends Record<string, any>> {
 	mergeFiles?: string[]
 }
 
-export type PluginData = {
+type PluginData = {
 	name: string
 	dirPath: string
 	pluginFileData: PluginFileConfig
@@ -66,7 +67,9 @@ interface PluginsOptions {
 	selectedPlugins?: string[]
 }
 
-export class Plugins {
+/*********************METHODS**********************/
+
+class Plugins {
 	grit: Grit
 	/** absolute path to the directory containing all of the plugins */
 	pluginsDir: string
@@ -281,3 +284,11 @@ export class Plugins {
 		}
 	}
 }
+
+/*********************EXPORTS**********************/
+
+export { Plugins }
+
+export { Ignore, PluginConfig, PluginData }
+
+export * from './pluginFile'

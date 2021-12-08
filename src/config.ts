@@ -1,8 +1,20 @@
+import path from 'path'
+import os from 'os'
 import { getGitUser } from './utils/git-user'
 
 // URLs
 export const DOCS_URL = 'https://timcrooker.github.io/Grit/'
 export const GITHUB_URL = 'https://github.com/TimCrooker/Grit'
+
+// Store configs
+const STORE_VERSION = 1
+export const ROOT_CACHE_PATH = path.join(
+	os.homedir(),
+	`.grit/V${STORE_VERSION}`
+)
+export const GENERATORS_CACHE_PATH = path.join(ROOT_CACHE_PATH, 'generators')
+export const PACKAGES_CACHE_PATH = path.join(GENERATORS_CACHE_PATH, 'packages')
+export const REPOS_CACHE_PATH = path.join(GENERATORS_CACHE_PATH, 'repos')
 
 // Local path conversions
 const RE = /^[./]|(^[a-zA-Z]:)/

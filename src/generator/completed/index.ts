@@ -1,6 +1,11 @@
-import { GeneratorConfig, Grit } from '@/index'
+import { Grit } from '..'
+import { GeneratorConfig } from '../generatorConfig'
 
-export class Completed {
+/*********************TYPES**********************/
+
+/*********************METHODS**********************/
+
+class Completed {
 	private grit: Grit
 
 	constructor(context: Grit) {
@@ -23,3 +28,7 @@ export class Completed {
 	 * Runtime availiable Properties
 	 */
 }
+
+/*********************EXPORTS**********************/
+
+export { Completed }

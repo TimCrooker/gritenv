@@ -7,7 +7,6 @@ import { SetRequired } from 'type-fest'
 import { promisify } from 'util'
 import { GritError } from '@/utils/error'
 import { getGitUser, GitUser } from '@/utils/git-user'
-import { GeneratorConfig } from '../generatorConfig'
 import { Prompt, Prompts } from './prompts'
 import { Action, Actions } from './actions'
 import { Data } from './data'
@@ -21,21 +20,21 @@ import {
 	getNpmClient,
 	InstallOptions,
 	installPackages,
-	mergeObjects,
 	NPM_CLIENT,
 	pathExists,
 	readFile,
 	requireUncached,
 } from 'youtill'
+import { colors, logger } from 'swaglog'
+import { spinner } from '@/utils/spinner'
+import { GeneratorConfig } from './generatorConfig'
 import {
 	NpmGenerator,
 	ParsedGenerator,
 	parseGenerator,
 	RepoGenerator,
-} from 'gritparse'
-import { colors, logger } from 'swaglog'
-import { spinner } from '@/utils/spinner'
-import { store } from '@/utils/store'
+} from './parseGenerator'
+import { store } from '@/store'
 
 export interface GritOptions {
 	/**
@@ -99,6 +98,8 @@ const POST_ACTIONS = 'post-actions'
 const COMPLETE = 'complete'
 const FINISHED = 'completed'
 
+/*********************TYPES**********************/
+
 type GenState =
 	| typeof IDLE
 	| typeof PREPARE
@@ -116,7 +117,9 @@ type StatefulMethod = (context: Grit) => Promise<void> | void
 
 type StatefulMethods = Record<GenState, StatefulMethod[]>
 
-export class Grit {
+/*********************METHODS**********************/
+
+class Grit {
 	opts: SetRequired<GritOptions, 'outDir' | 'logLevel' | 'mock' | 'debug'>
 	/** Use a console spinner to make asyncronous calls more user friendly */
 	spinner = spinner
@@ -124,8 +127,6 @@ export class Grit {
 	colors = colors
 	/** Log to the console with Grit */
 	logger = logger
-	/** Access Grit local storage */
-	store = store
 	/** information about the current generator */
 	generator: ParsedGenerator
 
@@ -212,7 +213,7 @@ export class Grit {
 		this.completed = new Completed(this)
 	}
 
-	/** Generator execution methods */
+	/*********************INTERNAL METHODS**********************/
 
 	/**
 	 * Run the generator with the configured options
@@ -274,9 +275,9 @@ export class Grit {
 	 */
 	async run(): Promise<this> {
 		// Increment the run count of the generator in the store
-		this.store.generators.set(
+		store.generators.set(
 			this.generator.hash + '.runCount',
-			this.store.generators.get(this.generator.hash + '.runCount') + 1 || 1
+			store.generators.get(this.generator.hash + '.runCount') + 1 || 1
 		)
 
 		if (this.opts.hotRebuild === true) {
@@ -379,9 +380,7 @@ export class Grit {
 		return
 	}
 
-	utils = { mergeObjects }
-
-	/** Generator Instance Properties */
+	/*********************GENERATOR AVAILIABLE PROPERTIES**********************/
 
 	/**
 	 * Retrive the answers
@@ -491,7 +490,7 @@ export class Grit {
 		return getNpmClient()
 	}
 
-	/** Generator Instance Methods */
+	/*********************GENERATOR AVAILIABLE METHODS**********************/
 
 	/** Add a method that will run when the generator reached the specified state */
 	setStatefulMethod(state: GenState, method: StatefulMethod): void {
@@ -583,7 +582,7 @@ export class Grit {
 		return new GritError(message)
 	}
 
-	/** Testing Helpers */
+	/*********************TESTING HELPERS**********************/
 
 	/**
 	 * Get file list of output directory
@@ -615,3 +614,7 @@ export class Grit {
 		return contents
 	}
 }
+
+/*********************EXPORTS**********************/
+
+export { Grit }

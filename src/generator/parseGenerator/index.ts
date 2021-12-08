@@ -1,8 +1,14 @@
 import path from 'path'
 import sum from 'hash-sum'
 import { parse } from 'parse-package-name'
-import { removeLocalPathPrefix, isLocalPath } from '@/config'
-import { PACKAGES_CACHE_PATH, REPOS_CACHE_PATH } from 'gritstore'
+import {
+	removeLocalPathPrefix,
+	isLocalPath,
+	PACKAGES_CACHE_PATH,
+	REPOS_CACHE_PATH,
+} from '@/config'
+
+/*********************TYPES**********************/
 
 interface Basegenerator {
 	type: 'local' | 'npm' | 'repo'
@@ -11,18 +17,18 @@ interface Basegenerator {
 	subGenerator?: string
 }
 
-export interface LocalGenerator extends Basegenerator {
+interface LocalGenerator extends Basegenerator {
 	type: 'local'
 }
 
-export interface NpmGenerator extends Basegenerator {
+interface NpmGenerator extends Basegenerator {
 	type: 'npm'
 	name: string
 	slug: string
 	version: string
 }
 
-export interface RepoGenerator extends Basegenerator {
+interface RepoGenerator extends Basegenerator {
 	type: 'repo'
 	prefix: GeneratorPrefix
 	user: string
@@ -30,14 +36,16 @@ export interface RepoGenerator extends Basegenerator {
 	version: string
 }
 
-export type ParsedGenerator = LocalGenerator | NpmGenerator | RepoGenerator
+type ParsedGenerator = LocalGenerator | NpmGenerator | RepoGenerator
 
-export type GeneratorPrefix = 'npm' | 'github' | 'gitlab' | 'bitbucket'
+type GeneratorPrefix = 'npm' | 'github' | 'gitlab' | 'bitbucket'
 
-export const GENERATOR_PREFIX_RE = /^(npm|github|bitbucket|gitlab):/
+/*********************METHODS**********************/
+
+const GENERATOR_PREFIX_RE = /^(npm|github|bitbucket|gitlab):/
 
 /** Infer prefix for naked generator name (without prefix) */
-export function inferGeneratorPrefix(generator: string): string {
+function inferGeneratorPrefix(generator: string): string {
 	if (!GENERATOR_PREFIX_RE.test(generator)) {
 		if (generator.startsWith('@')) {
 			generator = `npm:${generator.replace(/\/(grit-)?/, '/grit-')}`
@@ -122,7 +130,7 @@ function HandleRepoGenerator(
 	}
 }
 
-export function getGeneratorPrefix(generator: string): GeneratorPrefix {
+function getGeneratorPrefix(generator: string): GeneratorPrefix {
 	let prefix: GeneratorPrefix = 'npm'
 	let m: RegExpExecArray | null = null
 	if ((m = GENERATOR_PREFIX_RE.exec(generator))) {
@@ -132,7 +140,7 @@ export function getGeneratorPrefix(generator: string): GeneratorPrefix {
 }
 
 /** Get information from the given generator string */
-export function parseGenerator(generator: string): ParsedGenerator {
+function parseGenerator(generator: string): ParsedGenerator {
 	// Handle local generators
 	if (isLocalPath(generator)) {
 		return HandleLocalGenerator(generator)
@@ -155,3 +163,9 @@ export function parseGenerator(generator: string): ParsedGenerator {
 	// Generator is a repo
 	return HandleRepoGenerator(noPrefixGenerator, prefix)
 }
+
+/*********************EXPORTS**********************/
+
+export { LocalGenerator, NpmGenerator, RepoGenerator, ParsedGenerator }
+
+export { parseGenerator }

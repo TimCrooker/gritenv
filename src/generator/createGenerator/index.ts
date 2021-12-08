@@ -1,7 +1,9 @@
 import { Grit, GritOptions } from '@/generator'
 import { GeneratorConfig } from '../generatorConfig'
 
-export class Generator {
+/*********************METHODS**********************/
+
+class Generator {
 	config: GeneratorConfig
 	grit = Grit
 
@@ -13,3 +15,7 @@ export class Generator {
 		return new this.grit({ ...opts, config: this.config })
 	}
 }
+
+/*********************EXPORTS**********************/
+
+export { Generator }

@@ -4,10 +4,10 @@ import { logger } from 'swaglog'
 import { copy } from 'youtill'
 import { ActionFn } from '../../runAction'
 
-/**
- * Copy files
- */
-export interface CopyAction {
+/*********************TYPES**********************/
+
+/** Copy files */
+interface CopyAction {
 	type: 'copy'
 	/**
 	 *	Patterns object represents mappings for the source and destination files
@@ -31,7 +31,9 @@ export interface CopyAction {
 	overwrite?: boolean
 }
 
-export const copyAction: ActionFn<CopyAction> = async (context, action) => {
+/*********************METHODS**********************/
+
+const copyAction: ActionFn<CopyAction> = async (context, action) => {
 	await Promise.all(
 		Object.keys(action.patterns).map(async (pattern) => {
 			const files = await glob(pattern, {
@@ -52,3 +54,7 @@ export const copyAction: ActionFn<CopyAction> = async (context, action) => {
 		})
 	)
 }
+
+/*********************EXPORTS**********************/
+
+export { copyAction, CopyAction }

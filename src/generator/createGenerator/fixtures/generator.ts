@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
+import { GeneratorConfig } from '@/generator/generatorConfig'
 import path from 'path'
-import { Generator } from '..'
 
-const generator = new Generator({
+const generator = {
 	prompts(grit) {
 		this.input({
 			name: 'name',
@@ -56,6 +56,6 @@ const generator = new Generator({
 			})
 	},
 	async completed(grit) {},
-})
+} as GeneratorConfig
 
 export default generator

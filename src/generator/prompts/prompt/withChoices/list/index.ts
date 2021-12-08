@@ -2,7 +2,9 @@ import { DynamicQuestionProperty } from 'inquirer'
 import { ChoiceOptions } from '..'
 import { Answers, BasePrompt, WithAnswers, WithFullContext } from '../..'
 
-export interface ListPrompt extends BasePrompt {
+/*********************TYPES**********************/
+
+interface ListPrompt extends BasePrompt {
 	type: 'list' | 'rawlist'
 	mock?: string
 	plugin?: boolean
@@ -13,10 +15,16 @@ export interface ListPrompt extends BasePrompt {
 	loop?: boolean
 }
 
+/*********************METHODS**********************/
+
 /** Choice for list style prompts */
-export interface ListChoice<T extends Answers = Answers> extends ChoiceOptions {
+interface ListChoice<T extends Answers = Answers> extends ChoiceOptions {
 	/**
 	 * A value indicating whether the choice is disabled.
 	 */
 	disabled?: DynamicQuestionProperty<boolean | string, T> | undefined
 }
+
+/*********************EXPORTS**********************/
+
+export { ListPrompt, ListChoice }

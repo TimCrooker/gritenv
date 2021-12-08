@@ -1,7 +1,9 @@
 import { BasePrompt, WithAnswers, WithFullContext, Answers } from '../..'
 import { ListChoice } from '../list'
 
-export interface CheckboxPrompt extends BasePrompt {
+/*********************TYPES**********************/
+
+interface CheckboxPrompt extends BasePrompt {
 	type: 'checkbox'
 	plugin?: boolean
 	mock?: Array<string>
@@ -11,13 +13,18 @@ export interface CheckboxPrompt extends BasePrompt {
 	filter?: WithFullContext<unknown, Array<string>>
 }
 
+/*********************METHODS**********************/
+
 /**
  * Provides options for a choice of the `CheckboxPrompt`.
  */
-export interface CheckboxChoice<T extends Answers = Answers>
-	extends ListChoice<T> {
+interface CheckboxChoice<T extends Answers = Answers> extends ListChoice<T> {
 	/**
 	 * A value indicating whether the choice should be initially checked.
 	 */
 	checked?: boolean | undefined
 }
+
+/*********************EXPORTS**********************/
+
+export { CheckboxPrompt, CheckboxChoice }

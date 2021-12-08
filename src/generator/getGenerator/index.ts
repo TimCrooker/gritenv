@@ -1,44 +1,53 @@
-import path from 'path'
+import { CONFIG_FILE_NAME } from '@/config'
 import JoyCon from 'joycon'
-import pa from 'path'
+import path from 'path'
 import { logger } from 'swaglog'
-import { ensureGenerator } from '@/ensureGenerator'
+import { globalRequire, pathExists } from 'youtill'
+import { Grit, GritOptions } from '..'
+import { defaultGeneratorFile } from '../defaultGenerator'
+import { ensureGenerator } from '../ensureGenerator'
+import { GeneratorConfig } from '../generatorConfig'
 import {
+	NpmGenerator,
 	ParsedGenerator,
 	parseGenerator,
-	NpmGenerator,
 	RepoGenerator,
-} from '@/parseGenerator'
-import { defaultGeneratorFile } from '@/defaultGenerator'
-import { globalRequire, pathExists } from 'youtill'
-import { Grit, GritOptions } from '@/generator'
-import { GeneratorConfig } from '@/generatorConfig'
-import { CONFIG_FILE_NAME } from '@/config'
+} from '../parseGenerator'
+
+/*********************TYPES**********************/
+
+interface GetGeneratorOptions
+	extends Omit<GritOptions, 'parsedGenerator' | 'config'> {
+	generator: ParsedGenerator | string
+	update?: boolean
+}
+
+/*********************METHODS**********************/
 
 const joycon = new JoyCon({
 	files: CONFIG_FILE_NAME,
 })
 
 /** load the generator config file */
-export const loadGeneratorConfig = async (
+const loadGeneratorConfig = async (
 	cwd: string
-): Promise<{ path?: string; data?: GeneratorConfig }> => {
+): Promise<{ filePath?: string; data?: GeneratorConfig }> => {
 	logger.debug('loading generator from path:', cwd)
-	const { path } = await joycon.load({
+	const { path: filePath } = await joycon.load({
 		cwd,
-		stopDir: pa.dirname(cwd),
+		stopDir: path.dirname(cwd),
 	})
-	const data = path ? await globalRequire(path) : undefined
+	const data = filePath ? await globalRequire(filePath) : undefined
 
-	return { path, data }
+	return { filePath, data }
 }
 
 /** Check generator has config file */
-export const hasGeneratorConfig = (cwd: string): boolean => {
+const hasGeneratorConfig = (cwd: string): boolean => {
 	return Boolean(
 		joycon.resolve({
 			cwd,
-			stopDir: pa.dirname(cwd),
+			stopDir: path.dirname(cwd),
 		})
 	)
 }
@@ -47,7 +56,7 @@ export const hasGeneratorConfig = (cwd: string): boolean => {
  * Load local version of grit for npm packages and local generators
  * if none is found, load the newest version one
  */
-export const loadGeneratorGrit = async (
+const loadGeneratorGrit = async (
 	generator: ParsedGenerator
 ): Promise<typeof Grit> => {
 	//load the generators installed version of grit generator
@@ -69,20 +78,12 @@ export const loadGeneratorGrit = async (
 	return Grit
 }
 
-interface GetGeneratorOptions
-	extends Omit<GritOptions, 'parsedGenerator' | 'config'> {
-	generator: ParsedGenerator | string
-	update?: boolean
-}
-
 /**
  * Get actual generator to run and its config
  *
  * Download it if not yet cached
  */
-export const getGenerator = async (
-	opts: GetGeneratorOptions
-): Promise<Grit> => {
+const getGenerator = async (opts: GetGeneratorOptions): Promise<Grit> => {
 	let parsedGenerator: ParsedGenerator
 	// use directly passed parsed generator or parse generator string
 	if (typeof opts.generator === 'string') {
@@ -96,7 +97,7 @@ export const getGenerator = async (
 	// load actual generator from generator path
 	const loadedConfig = await loadGeneratorConfig(parsedGenerator.path)
 	const config: GeneratorConfig =
-		loadedConfig.path && loadedConfig.data
+		loadedConfig.filePath && loadedConfig.data
 			? loadedConfig.data
 			: defaultGeneratorFile
 
@@ -106,3 +107,9 @@ export const getGenerator = async (
 
 	return new Gen({ ...opts, config: config, generator: parsedGenerator })
 }
+
+/*********************EXPORTS**********************/
+
+export { loadGeneratorConfig, hasGeneratorConfig, loadGeneratorGrit }
+
+export { getGenerator }

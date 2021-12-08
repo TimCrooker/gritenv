@@ -1,10 +1,12 @@
-import { ParsedGenerator } from '@/parseGenerator'
-import { store } from '@/utils/store'
+import { store } from '@/store'
 import { colors } from 'swaglog'
 import { pathExists } from 'youtill'
+import { ParsedGenerator } from '../parseGenerator'
 
-/** Check that the generator exists where it should be and download it if it isnt */
-export const ensureGenerator = async (
+/*********************TYPES**********************/
+
+/** Check that the generator exists where it should be and download it if it doesn't */
+const ensureGenerator = async (
 	generator: ParsedGenerator,
 	update?: boolean
 ): Promise<void> => {
@@ -34,3 +36,7 @@ export const ensureGenerator = async (
 		store.generators.add(generator)
 	}
 }
+
+/*********************TYPES**********************/
+
+export { ensureGenerator }

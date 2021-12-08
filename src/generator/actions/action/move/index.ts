@@ -4,10 +4,9 @@ import { logger } from 'swaglog'
 import { move } from 'youtill'
 import { ActionFn } from '../../runAction'
 
-/**
- * Move and rename files
- */
-export interface MoveAction {
+/*********************TYPES**********************/
+
+interface MoveAction {
 	type: 'move'
 	/**
 	 *	Patterns object represents the filepath conversions
@@ -31,7 +30,10 @@ export interface MoveAction {
 	overwrite?: boolean
 }
 
-export const moveAction: ActionFn<MoveAction> = async (context, action) => {
+/*********************METHODS**********************/
+
+/** Move and rename files */
+const moveAction: ActionFn<MoveAction> = async (context, action) => {
 	await Promise.all(
 		Object.keys(action.patterns).map(async (pattern) => {
 			const files = await glob(pattern, {
@@ -53,3 +55,7 @@ export const moveAction: ActionFn<MoveAction> = async (context, action) => {
 		})
 	)
 }
+
+/*********************EXPORTS**********************/
+
+export { moveAction, MoveAction }

@@ -3,7 +3,9 @@ import path from 'path'
 import { logger } from 'swaglog'
 import { ActionFn } from '../../runAction'
 
-export interface ModifyAction {
+/*********************TYPES**********************/
+
+interface ModifyAction {
 	type: 'modify'
 	/** Glob patterns to target files inside of the project directory for manipulation */
 	files: string | string[]
@@ -17,7 +19,9 @@ export interface ModifyAction {
 	handler: (data: Record<string, any> | string, filepath: string) => any
 }
 
-export const modifyAction: ActionFn<ModifyAction> = async (context, action) => {
+/*********************METHODS**********************/
+
+const modifyAction: ActionFn<ModifyAction> = async (context, action) => {
 	const stream = majo()
 	stream.source(action.files, { baseDir: context.opts.outDir })
 	stream.use(async ({ files }) => {
@@ -44,3 +48,7 @@ export const modifyAction: ActionFn<ModifyAction> = async (context, action) => {
 	})
 	await stream.dest(context.opts.outDir)
 }
+
+/*********************EXPORTS**********************/
+
+export { modifyAction, ModifyAction }

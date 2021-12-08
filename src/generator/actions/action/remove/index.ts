@@ -3,16 +3,18 @@ import { glob, remove } from 'majo'
 import { logger } from 'swaglog'
 import { ActionFn } from '../../runAction'
 
-/**
- * Remove files
- */
-export interface RemoveAction {
+/*********************TYPES**********************/
+
+/** Remove files */
+interface RemoveAction {
 	type: 'remove'
 	/** filename(s) to remove */
 	files: string | string[] | { [k: string]: string | boolean }
 }
 
-export const removeAction: ActionFn<RemoveAction> = async (context, action) => {
+/*********************METHODS**********************/
+
+const removeAction: ActionFn<RemoveAction> = async (context, action) => {
 	let patterns: string[] = []
 
 	if (typeof action.files === 'string') {
@@ -34,3 +36,7 @@ export const removeAction: ActionFn<RemoveAction> = async (context, action) => {
 		})
 	)
 }
+
+/*********************EXPORTS**********************/
+
+export { RemoveAction, removeAction }

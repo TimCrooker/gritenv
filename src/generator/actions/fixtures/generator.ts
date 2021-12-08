@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
-import { Generator } from '@/createGenerator'
+import { Generator } from '@/generator/createGenerator'
 
 module.exports = {
 	actions() {

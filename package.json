@@ -23,6 +23,7 @@
 		"node": ">=14"
 	},
 	"dependencies": {
+		"@types/update-notifier": "^5.1.0",
 		"axios": "^0.24.0",
 		"chalk": "^4.1.2",
 		"chokidar": "^3.5.2",
@@ -33,7 +34,6 @@
 		"ejs": "^3.1.6",
 		"figlet": "^1.5.2",
 		"fs-extra": "^9.1.0",
-		"gritstore": "^1.1.1",
 		"hash-sum": "^2.0.0",
 		"inquirer": "^8.2.0",
 		"inquirer-autocomplete-prompt": "^1.4.0",

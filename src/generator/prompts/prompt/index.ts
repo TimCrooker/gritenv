@@ -1,20 +1,21 @@
-import { runPrompts } from '../runPrompts'
 import { ConfirmPrompt } from './confirm'
-import { InputPrompt } from './input/input'
-import { NumberPrompt } from './number/number'
-import { PasswordPrompt } from './password/password'
+import { InputPrompt } from './input'
+import { NumberPrompt } from './number'
+import { PasswordPrompt } from './password'
 import { CheckboxPrompt } from './withChoices/checkbox'
 import { ListPrompt } from './withChoices/list'
 
-export type Answers = Record<string, any>
+/*********************TYPES**********************/
 
-export type Answer<T = any> = Record<string, T>
+type Answers = Record<string, any>
 
-export type WithAnswers<T> = T | ((answers: Answers) => T)
+type Answer<T = any> = Record<string, T>
 
-export type WithFullContext<T, Y> = (input: T, answers: Answers) => Y
+type WithAnswers<T> = T | ((answers: Answers) => T)
 
-export type Prompt =
+type WithFullContext<T, Y> = (input: T, answers: Answers) => Y
+
+type Prompt =
 	| ListPrompt
 	| ConfirmPrompt
 	| NumberPrompt
@@ -22,7 +23,7 @@ export type Prompt =
 	| CheckboxPrompt
 	| InputPrompt
 
-export interface BasePrompt {
+interface BasePrompt {
 	type: string
 	name: string
 	message: WithAnswers<string>
@@ -34,10 +35,16 @@ export interface BasePrompt {
 	store?: boolean
 }
 
-export type ArrayPrompt = ListPrompt | CheckboxPrompt
+type ArrayPrompt = ListPrompt | CheckboxPrompt
+
+/*********************EXPORTS**********************/
+
+export { Answers, Answer, WithAnswers, WithFullContext }
 
 export {
-	runPrompts,
+	Prompt,
+	BasePrompt,
+	ArrayPrompt,
 	ListPrompt,
 	ConfirmPrompt,
 	NumberPrompt,

@@ -1,7 +1,7 @@
-import { defaultGeneratorFile } from '@/defaultGenerator'
-import { parseGenerator } from '@/parseGenerator'
 import path from 'path'
 import { getGenerator, loadGeneratorGrit } from '.'
+import { defaultGeneratorFile } from '../defaultGenerator'
+import { parseGenerator } from '../parseGenerator'
 
 describe('Name of the group', () => {
 	it('should load npm generator versioned instance', async () => {

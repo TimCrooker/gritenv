@@ -1,6 +1,8 @@
 import { BasePrompt, WithAnswers, WithFullContext } from '..'
 
-export interface PasswordPrompt extends BasePrompt {
+/*********************TYPES**********************/
+
+interface PasswordPrompt extends BasePrompt {
 	type: 'password'
 	mask: string
 	mock?: string
@@ -8,3 +10,7 @@ export interface PasswordPrompt extends BasePrompt {
 	validate?: WithFullContext<string, boolean | string>
 	filter?: WithFullContext<string, string>
 }
+
+/*********************EXPORTS**********************/
+
+export { PasswordPrompt }

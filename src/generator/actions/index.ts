@@ -10,18 +10,16 @@ import {
 } from './action'
 import { createAction, RemoveActionType } from './createAction'
 import { runAction } from './runAction'
-export * from './action'
 
-export type ActionProvider = (context: Grit) => Promise<Action[]> | Action[]
+/*********************TYPES**********************/
 
-export type Action =
-	| AddAction
-	| MoveAction
-	| CopyAction
-	| ModifyAction
-	| RemoveAction
+type ActionProvider = (context: Grit) => Promise<Action[]> | Action[]
 
-export class Actions {
+type Action = AddAction | MoveAction | CopyAction | ModifyAction | RemoveAction
+
+/*********************METHODS**********************/
+
+class Actions {
 	private _actions: Action[] = []
 	private context: Grit
 	private actionProviders: ActionProvider[] = []
@@ -146,3 +144,11 @@ export class Actions {
 		return this._actions
 	}
 }
+
+/*********************EXPORTS**********************/
+
+export { Actions }
+
+export { Action, ActionProvider }
+
+export * from './action'

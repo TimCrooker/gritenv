@@ -1,5 +1,6 @@
-import { getGenerator } from '@/getGenerator'
+
 import { Grit } from '@/generator'
+import { getGenerator } from '@/generator/getGenerator'
 import path from 'path'
 import { modifyAction } from '.'
 import { createAction } from '../../createAction'

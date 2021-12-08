@@ -1,17 +1,16 @@
-import { Grit } from '@/generator/index'
-import { Action, Actions } from '../generator/actions'
-import { Prompt } from '../generator/prompts/prompt'
-import { Prompts } from '../generator/prompts'
-import { Data } from '../generator/data'
-import { Completed } from '../generator/completed'
-import { Prepare } from '../generator/prepare'
-import { PluginConfig } from '../generator/plugins'
+import { Grit } from '..'
+import { Action, Actions } from '../actions'
+import { Completed } from '../completed'
+import { Data } from '../data'
+import { PluginConfig } from '../plugins'
+import { Prepare } from '../prepare'
+import { Prompt, Prompts } from '../prompts'
 
-export type DataType = Record<string, any>
+/*********************TYPES**********************/
 
-export interface GeneratorConfig<
-	T extends Record<string, any> = Record<string, any>
-> {
+type DataType = Record<string, any>
+
+interface GeneratorConfig<T extends Record<string, any> = Record<string, any>> {
 	/**
 	 * Generator description
 	 * Used in CLI output
@@ -71,3 +70,7 @@ export interface GeneratorConfig<
 	 */
 	completed?: (this: Completed, ctx: Grit) => Promise<void> | void
 }
+
+/*********************EXPORTS**********************/
+
+export { DataType, GeneratorConfig }

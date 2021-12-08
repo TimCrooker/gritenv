@@ -1,5 +1,6 @@
-import { getGenerator } from '@/getGenerator'
+
 import path from 'path'
+import { getGenerator } from '../getGenerator'
 
 describe('Name of the group', () => {
 	it('should pass', async () => {

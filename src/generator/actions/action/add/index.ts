@@ -4,13 +4,15 @@ import { majo } from 'majo'
 import matcher from 'micromatch'
 import path from 'path'
 import { Grit } from '@/generator'
-import { DataType } from '@/generatorConfig'
 import { logger } from 'swaglog'
 import { getGlobPatterns } from '@/utils/glob'
 import { ActionFn } from '../../runAction'
+import { DataType } from '@/generator/generatorConfig'
 
-/**  */
-export interface AddAction {
+/*********************TYPES**********************/
+
+/** Add files from tempalate directory to the generator output directory */
+interface AddAction {
 	type: 'add'
 	templateDir?: string
 	files: string[] | string
@@ -32,7 +34,9 @@ export interface AddAction {
 	data?: DataType | ((ctx: Grit) => DataType)
 }
 
-export const addAction: ActionFn<AddAction> = async (context, action) => {
+/*********************METHODS**********************/
+
+const addAction: ActionFn<AddAction> = async (context, action) => {
 	const config = context.opts.config
 
 	const stream = majo()
@@ -102,3 +106,7 @@ export const addAction: ActionFn<AddAction> = async (context, action) => {
 	}
 	await stream.dest(context.opts.outDir)
 }
+
+/*********************EXPORTS**********************/
+
+export { AddAction, addAction }

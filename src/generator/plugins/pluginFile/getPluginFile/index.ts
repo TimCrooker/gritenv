@@ -5,12 +5,14 @@ import { defaultPluginFile } from '..'
 import { globalRequire } from 'youtill'
 import { PLUGIN_FILE_NAME } from '@/config'
 
+/*********************METHODS**********************/
+
 const joycon = new JoyCon({
 	files: PLUGIN_FILE_NAME,
 })
 
 /** load the generator config file */
-export const loadPluginConfig = async (
+const loadPluginConfig = async (
 	cwd: string
 ): Promise<{ filePath: string; data: PluginFileConfig<unknown> }> => {
 	const { path } = await joycon.load({
@@ -26,7 +28,7 @@ export const loadPluginConfig = async (
 }
 
 /** Check generator has config file */
-export const hasPluginConfig = (cwd: string): boolean => {
+const hasPluginConfig = (cwd: string): boolean => {
 	return Boolean(
 		joycon.resolve({
 			cwd,
@@ -34,3 +36,7 @@ export const hasPluginConfig = (cwd: string): boolean => {
 		})
 	)
 }
+
+/*********************EXPORTS**********************/
+
+export { loadPluginConfig, hasPluginConfig }

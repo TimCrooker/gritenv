@@ -1,6 +1,6 @@
 import { Grit } from '@/generator'
-import { getGenerator } from '@/getGenerator'
 import path from 'path'
+import { getGenerator } from '../getGenerator'
 
 let grit: Grit
 

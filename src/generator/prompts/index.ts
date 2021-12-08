@@ -1,8 +1,8 @@
 import { Grit } from '@/generator'
-import { store } from '@/utils/store'
+import { store } from '@/store'
 import resolveFrom from 'resolve-from'
 import { logger } from 'swaglog'
-import { GeneratorConfig } from '../../generatorConfig'
+import { GeneratorConfig } from '../generatorConfig'
 import { createPrompt, RemovePromptType } from './createPrompt'
 import {
 	Answers,
@@ -13,11 +13,14 @@ import {
 	NumberPrompt,
 	PasswordPrompt,
 	Prompt,
-	runPrompts,
 } from './prompt'
-export * from './prompt'
+import { runPrompts } from './runPrompts'
 
-export class Prompts {
+/*********************TYPES**********************/
+
+/*********************METHODS**********************/
+
+class Prompts {
 	private _prompts: Prompt[] = []
 	private grit: Grit
 	private _answers: Answers = {}
@@ -192,4 +195,8 @@ export class Prompts {
 	}
 }
 
-export { Prompt } from './prompt'
+/*********************EXPORTS**********************/
+
+export { Prompts }
+
+export * from './prompt'

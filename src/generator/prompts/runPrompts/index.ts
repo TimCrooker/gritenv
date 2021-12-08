@@ -2,6 +2,8 @@ import inquirer from 'inquirer'
 import { logger } from 'swaglog'
 import { Answers, ArrayPrompt, Prompt } from '../prompt'
 
+/*********************TYPES**********************/
+
 interface PromptOptions {
 	prompts: Prompt[]
 	cachedAnswers?: Answers
@@ -9,8 +11,10 @@ interface PromptOptions {
 	mock?: boolean
 }
 
+/*********************METHODS**********************/
+
 /** Use inquirer to get answers to the prompts from the user */
-export const runPrompts = async ({
+const runPrompts = async ({
 	prompts,
 	cachedAnswers,
 	injectedAnswers = {},
@@ -70,3 +74,7 @@ export const runPrompts = async ({
 
 	return answers
 }
+
+/*********************EXPORTS**********************/
+
+export { runPrompts }

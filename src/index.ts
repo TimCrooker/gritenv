@@ -1,20 +1,20 @@
 export { Grit, GritOptions } from '@/generator'
-export { GeneratorConfig } from '@/generatorConfig'
-export { Generator } from '@/createGenerator'
-export { defaultGeneratorFile } from '@/defaultGenerator'
-export { ensureGenerator } from '@/ensureGenerator'
+export { GeneratorConfig } from '@/generator/generatorConfig'
+export { Generator } from '@/generator/createGenerator'
+export { defaultGeneratorFile } from '@/generator/defaultGenerator'
+export { ensureGenerator } from '@/generator/ensureGenerator'
 export {
 	getGenerator,
 	loadGeneratorConfig,
 	hasGeneratorConfig,
-} from '@/getGenerator'
+} from '@/generator/getGenerator'
 export {
 	LocalGenerator,
 	NpmGenerator,
 	RepoGenerator,
 	ParsedGenerator,
 	parseGenerator,
-} from '@/parseGenerator'
+} from '@/generator/parseGenerator'
 export {
 	Action,
 	AddAction,
@@ -42,4 +42,9 @@ export {
 	InputPrompt,
 	Answers,
 } from '@/generator/prompts'
-export { store } from '@/utils/store'
+export {
+	store,
+	StoreGenerator,
+	StoreNpmGenerator,
+	StoreRepoGenerator,
+} from '@/store'

@@ -7,10 +7,14 @@ import {
 	RemoveAction,
 } from '../action'
 
-export type RemoveActionType<T extends Action> = Omit<T, 'type'>
+/*********************TYPES**********************/
+
+type RemoveActionType<T extends Action> = Omit<T, 'type'>
+
+/*********************METHODS**********************/
 
 /** Simple type-safe creation of actions */
-export const createAction = {
+const createAction = {
 	add(action: RemoveActionType<AddAction>): AddAction {
 		return {
 			...action,
@@ -46,3 +50,9 @@ export const createAction = {
 		}
 	},
 }
+
+/*********************EXPORTS**********************/
+
+export { RemoveActionType }
+
+export { createAction }

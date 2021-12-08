@@ -1,9 +1,4 @@
-import {
-	getGeneratorPrefix,
-	inferGeneratorPrefix,
-	ParsedGenerator,
-	parseGenerator,
-} from './'
+import { ParsedGenerator, parseGenerator } from './'
 import os from 'os'
 
 const parse = (name: string): ParsedGenerator => {
@@ -131,48 +126,48 @@ describe('Parse generators', () => {
 	})
 })
 
-describe('Extract generator prefix', () => {
-	it('gitlab', () => {
-		expect(getGeneratorPrefix('gitlab:egoist/poi')).toBe('gitlab')
-	})
-	it('github', () => {
-		expect(getGeneratorPrefix('github:egoist/poi')).toBe('github')
-	})
-	it('npm with version', () => {
-		expect(getGeneratorPrefix('poi@2.0.1')).toBe('npm')
-	})
-	it('npm naked', () => {
-		expect(getGeneratorPrefix('poi')).toBe('npm')
-	})
-	it('Extract generator prefix', () => {
-		expect(getGeneratorPrefix('gitlab:egoist/poi')).toBe('gitlab')
-	})
-})
+// describe('Extract generator prefix', () => {
+// 	it('gitlab', () => {
+// 		expect(getGeneratorPrefix('gitlab:egoist/poi')).toBe('gitlab')
+// 	})
+// 	it('github', () => {
+// 		expect(getGeneratorPrefix('github:egoist/poi')).toBe('github')
+// 	})
+// 	it('npm with version', () => {
+// 		expect(getGeneratorPrefix('poi@2.0.1')).toBe('npm')
+// 	})
+// 	it('npm naked', () => {
+// 		expect(getGeneratorPrefix('poi')).toBe('npm')
+// 	})
+// 	it('Extract generator prefix', () => {
+// 		expect(getGeneratorPrefix('gitlab:egoist/poi')).toBe('gitlab')
+// 	})
+// })
 
-describe('Infer prefix from naked generator', () => {
-	it('gitlab', () => {
-		expect(inferGeneratorPrefix('gitlab:egoist/poi')).toBe('gitlab:egoist/poi')
-	})
+// describe('Infer prefix from naked generator', () => {
+// 	it('gitlab', () => {
+// 		expect(inferGeneratorPrefix('gitlab:egoist/poi')).toBe('gitlab:egoist/poi')
+// 	})
 
-	it('naked github repo', () => {
-		expect(inferGeneratorPrefix('egoist/poi')).toBe('github:egoist/poi')
-	})
+// 	it('naked github repo', () => {
+// 		expect(inferGeneratorPrefix('egoist/poi')).toBe('github:egoist/poi')
+// 	})
 
-	it('naked npm', () => {
-		expect(inferGeneratorPrefix('poi')).toBe(`npm:grit-poi`)
-	})
+// 	it('naked npm', () => {
+// 		expect(inferGeneratorPrefix('poi')).toBe(`npm:grit-poi`)
+// 	})
 
-	it('naked npm with version', () => {
-		expect(inferGeneratorPrefix('poi@2.0.1')).toBe(`npm:grit-poi@2.0.1`)
-	})
+// 	it('naked npm with version', () => {
+// 		expect(inferGeneratorPrefix('poi@2.0.1')).toBe(`npm:grit-poi@2.0.1`)
+// 	})
 
-	it('scoped npm', () => {
-		expect(inferGeneratorPrefix('@egoist/poi')).toBe(`npm:@egoist/grit-poi`)
-	})
+// 	it('scoped npm', () => {
+// 		expect(inferGeneratorPrefix('@egoist/poi')).toBe(`npm:@egoist/grit-poi`)
+// 	})
 
-	it('scoped npm with version', () => {
-		expect(inferGeneratorPrefix('@egoist/poi@2.0.1')).toBe(
-			`npm:@egoist/grit-poi@2.0.1`
-		)
-	})
-})
+// 	it('scoped npm with version', () => {
+// 		expect(inferGeneratorPrefix('@egoist/poi@2.0.1')).toBe(
+// 			`npm:@egoist/grit-poi@2.0.1`
+// 		)
+// 	})
+// })

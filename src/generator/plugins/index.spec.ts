@@ -1,7 +1,7 @@
-import { getGenerator } from '@/getGenerator'
 import path from 'path'
 import { Plugins } from '.'
 import { Grit } from '..'
+import { getGenerator } from '../getGenerator'
 
 let pluginsWorker: Plugins
 let grit: Grit

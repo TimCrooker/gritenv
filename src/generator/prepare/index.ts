@@ -1,6 +1,13 @@
 import { GeneratorConfig, Grit } from '@/index'
 
-export class Prepare {
+/*********************TYPES**********************/
+
+/*********************METHODS**********************/
+
+/**
+ * Gather information, Execute custom functionality or inject data before the generator is run.
+ */
+class Prepare {
 	private grit: Grit
 
 	constructor(context: Grit) {
@@ -23,3 +30,7 @@ export class Prepare {
 	 * Runtime availiable Properties
 	 */
 }
+
+/*********************EXPORTS**********************/
+
+export { Prepare }

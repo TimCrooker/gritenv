@@ -9,10 +9,13 @@ import {
 	removeAction,
 } from '../action'
 
-export const runAction = async (
-	context: Grit,
-	action: Action
-): Promise<void> => {
+/*********************TYPES**********************/
+
+type ActionFn<T> = (context: Grit, action: T) => Promise<void>
+
+/*********************METHODS**********************/
+
+const runAction = async (context: Grit, action: Action): Promise<void> => {
 	logger.debug('Running action:', action)
 	if (action.type === 'add' && action.files) {
 		await addAction(context, action)
@@ -27,4 +30,8 @@ export const runAction = async (
 	}
 }
 
-export type ActionFn<T> = (context: Grit, action: T) => Promise<void>
+/*********************EXPORTS**********************/
+
+export { ActionFn }
+
+export { runAction }
