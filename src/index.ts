@@ -3,7 +3,11 @@ export { GeneratorConfig } from '@/generatorConfig'
 export { Generator } from '@/createGenerator'
 export { defaultGeneratorFile } from '@/defaultGenerator'
 export { ensureGenerator } from '@/ensureGenerator'
-export { getGenerator } from '@/getGenerator'
+export {
+	getGenerator,
+	loadGeneratorConfig,
+	hasGeneratorConfig,
+} from '@/getGenerator'
 export {
 	LocalGenerator,
 	NpmGenerator,
