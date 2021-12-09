@@ -42,9 +42,9 @@ export {
 	InputPrompt,
 	Answers,
 } from '@/generator/prompts'
+export { store } from '@/store'
 export {
-	store,
 	StoreGenerator,
 	StoreNpmGenerator,
 	StoreRepoGenerator,
-} from '@/store'
+} from '@/store/generatorStore'
