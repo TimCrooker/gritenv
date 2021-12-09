@@ -1,4 +1,4 @@
-import { Answers } from 'inquirer'
+import { Answers } from '@/generator/prompts'
 import { BaseStore, BaseStoreOptions } from '../baseStore'
 
 /*********************TYPES**********************/

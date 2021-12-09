@@ -2,14 +2,10 @@ import { PACKAGES_CACHE_PATH } from '@/config'
 import { hasGeneratorConfig } from '@/generator/getGenerator'
 import { NpmGenerator, RepoGenerator } from '@/generator/parseGenerator'
 import { spinner } from '@/utils/spinner'
+import { outputFile } from 'majo'
 import path from 'path'
 import { logger } from 'swaglog'
-import {
-	outputFile,
-	installPackages,
-	requireUncached,
-	pathExists,
-} from 'youtill'
+import { installPackages, pathExists, requireUncached } from 'youtill'
 import { downloadRepoFromGenerator } from './downloadRepo'
 
 /** Install an NPM generator to the grit store */
@@ -17,9 +13,8 @@ export const installNpmGenerator = async (
 	generator: NpmGenerator,
 	update = false
 ): Promise<NpmGenerator> => {
-	const installPath = path.join(PACKAGES_CACHE_PATH, generator.hash)
-	const packagePath = path.join(installPath, 'package.json')
-
+	const installPath = path.resolve(PACKAGES_CACHE_PATH, generator.hash)
+	const packagePath = path.resolve(installPath, 'package.json')
 	// write a package.json file in the store
 	await outputFile(
 		packagePath,
@@ -28,7 +23,6 @@ export const installNpmGenerator = async (
 		}),
 		'utf8'
 	)
-
 	// download the generator with npm install
 	spinner.start(
 		update ? 'Updating ' : 'Installing ' + 'generator at path ' + installPath
@@ -42,16 +36,13 @@ export const installNpmGenerator = async (
 	})
 	spinner.stop()
 	logger.success('Generator installed')
-
 	// grab the new generator package.json file
 	const packageJson = requireUncached(packagePath)
-
 	// in the store, add the generator and insert the true version
 	generator.version = packageJson.dependencies[generator.name].replace(
 		/^\^/,
 		''
 	)
-
 	return generator
 }
 
@@ -88,6 +79,9 @@ export const installGenerator = async (
 	generator: NpmGenerator | RepoGenerator,
 	update = false
 ): Promise<NpmGenerator | RepoGenerator> => {
+	if (!['npm', 'repo'].includes(generator.type)) {
+		throw new Error('Can only install NPM or repo generators')
+	}
 	if (generator.type === 'npm') {
 		return await installNpmGenerator(generator as NpmGenerator, update)
 	}

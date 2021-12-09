@@ -1,4 +1,4 @@
-import { getGenerator } from '@/getGenerator'
+import { getGenerator } from '@/generator/getGenerator'
 import path from 'path'
 
 const generator = path.join(__dirname, '..')

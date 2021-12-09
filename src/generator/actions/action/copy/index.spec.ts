@@ -1,6 +1,6 @@
-
 import { Grit } from '@/generator'
 import { getGenerator } from '@/generator/getGenerator'
+import { writeFileSync } from 'fs'
 import path from 'path'
 import { copyAction } from '.'
 import { createAction } from '../../createAction'
@@ -8,12 +8,24 @@ import { createAction } from '../../createAction'
 // jest.mock('@/index')
 let grit: Grit
 
+const fixturePath = path.resolve(__dirname, 'fixtures')
+
 describe('Copy Action', () => {
 	beforeEach(async () => {
 		grit = await getGenerator({
-			generator: path.join(__dirname, 'fixtures', 'generator'),
+			generator: fixturePath,
 			mock: true,
 		})
+	})
+
+	afterEach(async () => {
+		writeFileSync(path.join(fixturePath, 'foo.txt'), 'foo')
+		writeFileSync(
+			path.join(fixturePath, 'bar.json'),
+			JSON.stringify({
+				bar: false,
+			})
+		)
 	})
 
 	it('should copy file to output', async () => {

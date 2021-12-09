@@ -1,19 +1,30 @@
-
 import { getGenerator } from '@/generator/getGenerator'
 import { Grit } from '@/generator/index'
+import { writeFileSync } from 'fs'
 import path from 'path'
 import { moveAction } from '.'
 import { createAction } from '../../createAction'
 
-// jest.mock('@/index')
 let grit: Grit
+
+const fixturePath = path.resolve(__dirname, 'fixtures')
 
 describe('move Action', () => {
 	beforeEach(async () => {
 		grit = await getGenerator({
-			generator: path.join(__dirname, 'fixtures'),
+			generator: fixturePath,
 			mock: true,
 		})
+	})
+
+	afterEach(async () => {
+		writeFileSync(path.join(fixturePath, 'foo.txt'), 'foo')
+		writeFileSync(
+			path.join(fixturePath, 'bar.json'),
+			JSON.stringify({
+				bar: false,
+			})
+		)
 	})
 
 	it('should move file to output', async () => {

@@ -5,10 +5,10 @@ import {
 } from '@/generator/parseGenerator'
 import { logger } from 'swaglog'
 import { UpdateInfo } from 'update-notifier'
-import { BaseStoreOptions, BaseStore } from '../baseStore'
+import { BaseStore, BaseStoreOptions } from '../baseStore'
 import {
-	getRepoGeneratorName,
 	getNpmGeneratorName,
+	getRepoGeneratorName,
 } from './utils/getGeneratorName'
 import { installGenerator } from './utils/installGenerator'
 
@@ -43,18 +43,29 @@ class GeneratorStore extends BaseStore<StoreGenerator> {
 	}
 
 	/** Add a new generator to the store if it doesn't already exist */
-	add(generator: NpmGenerator | RepoGenerator): this {
+	async add(generator: NpmGenerator | RepoGenerator): Promise<this> {
+		if (this.get(generator.hash) !== undefined) {
+			throw new Error(`Generator already exists, use the update method instead`)
+		}
+
 		logger.debug(`Adding generator`)
-		installGenerator(generator)
-		this.set(generator.hash, generator)
+		const installedGenerator = await installGenerator(generator)
+		this.set(generator.hash, installedGenerator)
 		return this
 	}
 
-	/** Add a new generator to the store if it doesn't already exist */
-	update(generator: NpmGenerator | RepoGenerator): this {
+	/** Update generators in the store */
+	async update(generator: NpmGenerator | RepoGenerator): Promise<this> {
+		if (this.get(generator.hash) === undefined) {
+			logger.debug(
+				`Generator not found. The update method is for generators that already exist. Adding now...`
+			)
+			await this.add(generator)
+		}
+
 		logger.debug(`Updating generator`)
-		installGenerator(generator, true)
-		this.set(generator.hash, generator)
+		const installedGenerator = await installGenerator(generator, true)
+		this.set(generator.hash, installedGenerator)
 		return this
 	}
 

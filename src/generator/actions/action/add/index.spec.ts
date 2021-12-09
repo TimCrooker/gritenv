@@ -1,23 +1,38 @@
 import { Grit } from '@/generator'
 import { getGenerator } from '@/generator/getGenerator'
+import { writeFileSync } from 'fs'
 import path from 'path'
 import { addAction } from '.'
 import { createAction } from '../../createAction'
 
 let grit: Grit
 
+const fixturePath = path.resolve(__dirname, 'fixtures')
+
+const templateDir = path.join(fixturePath, 'template')
+
 describe('Add Action', () => {
 	beforeEach(async () => {
 		grit = await getGenerator({
-			generator: path.join(__dirname, 'fixtures', 'generator'),
+			generator: fixturePath,
 			mock: true,
 		})
+	})
+
+	afterEach(async () => {
+		writeFileSync(path.join(templateDir, 'foo.txt'), '<%= name %>')
+		writeFileSync(
+			path.join(templateDir, 'bar.json'),
+			JSON.stringify({
+				bar: '<%= name %>',
+			})
+		)
 	})
 
 	it('should add everything from template to outDir', async () => {
 		const action = createAction.add({
 			files: '**',
-			templateDir: path.join(__dirname, 'fixtures', 'generator', 'template'),
+			templateDir,
 			transform: false,
 		})
 
@@ -30,7 +45,7 @@ describe('Add Action', () => {
 	it('should transform file', async () => {
 		const action = createAction.add({
 			files: '**',
-			templateDir: path.join(__dirname, 'fixtures', 'generator', 'template'),
+			templateDir,
 		})
 
 		const name = 'Tim'
@@ -48,7 +63,7 @@ describe('Add Action', () => {
 	it('should exclude foo.txt from transform', async () => {
 		const action = createAction.add({
 			files: '**',
-			templateDir: path.join(__dirname, 'fixtures', 'generator', 'template'),
+			templateDir,
 			transformExclude: ['foo.txt'],
 		})
 
@@ -69,7 +84,7 @@ describe('Add Action', () => {
 	it('should include only foo.txt for transform', async () => {
 		const action = createAction.add({
 			files: '**',
-			templateDir: path.join(__dirname, 'fixtures', 'generator', 'template'),
+			templateDir,
 			transformInclude: ['foo.txt'],
 		})
 
@@ -91,7 +106,7 @@ describe('Add Action', () => {
 		const name = 'Tim'
 		const action = createAction.add({
 			files: '**',
-			templateDir: path.join(__dirname, 'fixtures', 'generator', 'template'),
+			templateDir,
 			data: () => ({ name }),
 		})
 

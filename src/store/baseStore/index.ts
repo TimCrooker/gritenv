@@ -5,6 +5,7 @@ import dotProp from 'dot-prop'
 import path from 'path'
 import { ROOT_CACHE_PATH } from '@/config'
 import { logger } from 'swaglog'
+import { removeFileSync } from 'youtill'
 
 /*********************TYPES**********************/
 
@@ -15,7 +16,7 @@ import { logger } from 'swaglog'
  *
  * Use this when you extend BaseStore to specify the type of data you want to store.
  *
- * @example ```class MyStore extends BaseStore<StoreFileData<MyDataType>> { }```
+ * @example class MyStore extends BaseStore<StoreFileData<MyDataType>> { }
  */
 type StoreFileData<T = any> = Record<string, T>
 
@@ -41,7 +42,7 @@ abstract class BaseStore<T = any> {
 
 		logger.debug('Store path:', this.storePath)
 
-		this.storeFilePath = path.join(
+		this.storeFilePath = path.resolve(
 			this.storePath,
 			options?.storeFileName || 'store.json'
 		)
@@ -100,7 +101,6 @@ abstract class BaseStore<T = any> {
 	 * Get item from the store whose key matches the provided one
 	 */
 	get(key: string): T | undefined | any {
-		this.data = this.read()
 		return dotProp.get(this.data, key)
 	}
 
@@ -108,7 +108,6 @@ abstract class BaseStore<T = any> {
 	 * Deletes an item from the store
 	 */
 	delete(key: string): this {
-		this.data = this.read()
 		logger.debug('Deleting', key, 'from', path.basename(this.storeFilePath))
 		dotProp.delete(this.data, key)
 		writeFileSync(this.storeFilePath, JSON.stringify(this.data), 'utf8')
@@ -117,7 +116,7 @@ abstract class BaseStore<T = any> {
 
 	/** Return an array of the values in the store for iteration */
 	listify(): T[] {
-		return Object.values(this.safeData)
+		return Object.values(this.data)
 	}
 
 	/**
@@ -126,20 +125,64 @@ abstract class BaseStore<T = any> {
 	 * gets passed a function that is run for each item of of the store used to match items
 	 */
 	getAllWhere(filterFunction: (key: string, value: any) => boolean): any[] {
-		return Object.entries(this.safeData)
+		return Object.entries(this.data)
 			.filter(([key, value]) => filterFunction(key, value))
 			.map(([, value]) => {
 				return value
 			})
 	}
 
-	get isEmpty(): boolean {
-		return this.listify().length === 0
+	/**
+	 * Resore the store from the backup.json file if there is one
+	 */
+	restoreFromBackup(): void {
+		logger.debug('Restoring from backup')
+		const backupFilePath = path.resolve(this.storePath, 'backup.json')
+		if (backupFilePath) {
+			// write backup file to the store file
+			try {
+				logger.debug('writing backup to store file')
+				const backupFile = readFileSync(backupFilePath, 'utf8')
+				this.data = JSON.parse(backupFile)
+				writeFileSync(this.storeFilePath, JSON.stringify(this.data), 'utf8')
+			} catch (error) {
+				logger.debug(error)
+				return
+			}
+
+			// delete backup file
+			try {
+				logger.debug('deleting backup file')
+				removeFileSync(backupFilePath)
+			} catch (error) {
+				logger.debug(error)
+				return
+			}
+		}
 	}
 
-	get safeData(): StoreFileData<T> {
-		this.data = this.read()
-		return this.data
+	/**
+	 * Backup the store to backup.json in the same directory as the store
+	 */
+	backup(): void {
+		writeFileSync(
+			path.resolve(this.storePath, 'backup.json'),
+			JSON.stringify(this.data),
+			'utf8'
+		)
+	}
+	/**
+	 * clear the entire store of data for testing purposes
+	 *
+	 * Be careful with this method, it will delete all data in the store
+	 *
+	 * if you clear the store by mistake, you can recover the files from the backup.json file
+	 * housed in the same directory as the store file
+	 */
+	clear(): void {
+		this.backup()
+		this.data = {}
+		writeFileSync(this.storeFilePath, JSON.stringify(this.data), 'utf8')
 	}
 }
 

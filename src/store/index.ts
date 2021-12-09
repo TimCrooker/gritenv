@@ -17,11 +17,3 @@ class Store {
 /*********************EXPORTS**********************/
 
 export const store = new Store()
-
-export {
-	StoreGenerator,
-	StoreNpmGenerator,
-	StoreRepoGenerator,
-} from './generatorStore'
-
-export {} from './answerStore'

@@ -1,30 +1,28 @@
+import { Answers } from '@/generator/prompts'
 import path from 'path'
 import { AnswerStore } from '.'
-import { Answers } from 'inquirer'
+
+const storePath = path.resolve(__dirname, 'fixtures')
+const answer: Answers = {
+	name: 'test',
+	value: 'test',
+}
+
+let store: AnswerStore
 
 describe('Answer Store', () => {
-	const storePath = path.join(__dirname, 'fixtures')
-	const answer: Answers = {
-		name: 'test',
-		value: 'test',
-	}
-
-	const store = new AnswerStore({
-		storePath,
+	beforeEach(() => {
+		store = new AnswerStore({
+			storePath,
+		})
 	})
 
-	it('set generator into store', () => {
+	afterEach(() => {
+		store.clear()
+	})
+
+	it('set and get answer into store', () => {
 		store.set('12345678', answer)
-	})
-
-	it('get generators from store', () => {
 		expect(store.get('12345678')).toEqual(answer)
 	})
-
-	it('read store', () => {
-		const content = store.read()
-		console.log(content)
-		expect(content).toBeDefined()
-	})
-	//create after all statement to clean up the test store
 })

@@ -1,18 +1,24 @@
-
 import { getGenerator } from '@/generator/getGenerator'
 import { Grit } from '@/generator/index'
+import { writeFileSync } from 'fs'
 import path from 'path'
 import { removeAction } from '.'
 import { createAction } from '../../createAction'
 
-let context: Grit
+let grit: Grit
+
+const fixturePath = path.resolve(__dirname, 'fixtures', 'generator')
 
 describe('Remove Action', () => {
 	beforeEach(async () => {
-		context = await getGenerator({
-			generator: path.join(__dirname, 'fixtures', 'generator'),
+		grit = await getGenerator({
+			generator: fixturePath,
 			mock: true,
 		})
+	})
+
+	afterEach(async () => {
+		writeFileSync(path.join(fixturePath, 'foo.txt'), 'foo')
 	})
 
 	it('should remove file from output directory', async () => {
@@ -20,12 +26,12 @@ describe('Remove Action', () => {
 			files: 'foo.txt',
 		})
 
-		await context.run()
+		await grit.run()
 
-		await expect(context.hasOutputFile('foo.txt')).resolves.toBeTruthy()
+		await expect(grit.hasOutputFile('foo.txt')).resolves.toBeTruthy()
 
-		await removeAction(context, action)
+		await removeAction(grit, action)
 
-		await expect(context.hasOutputFile('foo.txt')).resolves.toBeFalsy()
+		await expect(grit.hasOutputFile('foo.txt')).resolves.toBeFalsy()
 	})
 })

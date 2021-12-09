@@ -6,7 +6,7 @@ import fs from 'fs'
 import os from 'os'
 import axios from 'axios'
 import extractZip from '@egoist/extract-zip'
-import { RepoGenerator } from 'gritenv'
+import { RepoGenerator } from '@/generator/parseGenerator'
 
 /** Download file from a URL */
 export async function downloadFileFromUrl(
